@@ -1,0 +1,31 @@
+# Promptwerk ComfyUI Docker Compose File v0.0.1
+# http://github.com/siegfriedschaefer
+
+services:
+  promptwerk-comfyui:
+    build:
+      dockerfile: Dockerfile
+    image: pwrk:latest
+    container_name: pwrkcomfy
+    ports:
+      - "8188:8188"
+    volumes:
+      # persist your models, output, and settings:
+      - /Users/siggis/comfyui/models:/app/ComfyUI/models
+
+      # persist your output images:
+      - /Users/siggis/comfyui/output:/app/ComfyUI/output
+      
+      # persist all your settings & extra nodes:
+      - /Users/siggis/comfyui/settings:/app/ComfyUI/user/default:rw
+
+      # persist just your saved flows (overrides the workflows/ in default):
+      - /Users/siggis/comfyui/flows:/app/ComfyUI/user/default/workflows:rw
+
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
